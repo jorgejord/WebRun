@@ -115,6 +115,41 @@ iframe {
     font-size: 12px;
     color: var(--subtext);
 }
+
+.viewer-header{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:8px;
+}
+
+.fullscreen-btn{
+    padding:8px 14px;
+    font-size:13px;
+    border:none;
+    border-radius:8px;
+    background:var(--primary);
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.fullscreen-btn:hover{
+    background:var(--primary-hover);
+}
+
+#viewerContainer:fullscreen{
+    width:100vw;
+    height:100vh;
+    padding:0;
+    margin:0;
+}
+
+#viewerContainer:fullscreen iframe{
+    width:100vw;
+    height:100vh;
+    border-radius:0;
+}
+
 </style>
 </head>
 
@@ -135,11 +170,19 @@ iframe {
         <div class="filename" id="filename">ยังไม่ได้เลือกไฟล์</div>
     </div>
 
-    <div class="viewer-container">
+    <div class="viewer-container" id="viewerContainer">
+
+        <div class="viewer-header">
+            <button class="fullscreen-btn" id="fullscreenBtn">
+                Full Screen
+            </button>
+        </div>
+
         <iframe id="viewer"
             sandbox="allow-scripts"
             referrerpolicy="no-referrer">
         </iframe>
+
     </div>
 
     <div class="footer-note">
@@ -153,6 +196,26 @@ iframe {
 const input = document.getElementById("fileInput");
 const viewer = document.getElementById("viewer");
 const filenameText = document.getElementById("filename");
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+const viewerContainer = document.getElementById("viewerContainer");
+
+fullscreenBtn.addEventListener("click", () => {
+
+    if (!document.fullscreenElement) {
+
+        viewerContainer.requestFullscreen();
+
+        fullscreenBtn.textContent = "Exit Full Screen";
+
+    } else {
+
+        document.exitFullscreen();
+
+        fullscreenBtn.textContent = "Full Screen";
+
+    }
+
+});
 
 input.addEventListener("change", function(event) {
     const file = event.target.files[0];
